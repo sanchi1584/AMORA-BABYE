@@ -55,6 +55,19 @@
   .icon-btn{ width:20px; height:20px; opacity:0.85; cursor:pointer; }
   @media (max-width:760px){ .nav-links{ display:none; } }
 
+  /* ---------- MOBILE HAMBURGER MENU ---------- */
+  .hamburger-btn{ display:none; background:none; border:none; cursor:pointer; padding:2px 0 0; }
+  @media (max-width:760px){ .hamburger-btn{ display:flex; align-items:center; } }
+  .mobile-nav{
+    max-height:0; overflow:hidden; background:var(--cream);
+    transition:max-height .3s ease; border-top:0 solid var(--line);
+  }
+  .mobile-nav.open{ max-height:320px; border-top:1px solid var(--line); }
+  .mobile-nav a{
+    display:block; padding:16px 24px; font-weight:600; font-size:0.98rem;
+    border-bottom:1px solid var(--line); color:var(--ink);
+  }
+
   /* ---------- HERO ---------- */
   .hero{ padding:64px 24px 20px; }
   .hero-inner{ max-width:1120px; margin:0 auto; text-align:center; }
@@ -290,6 +303,9 @@
       <a href="#footer">Contacto</a>
     </nav>
     <div class="nav-right">
+      <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menú">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 7H20" stroke="#2B241C" stroke-width="1.8" stroke-linecap="round"/><path d="M4 12H20" stroke="#2B241C" stroke-width="1.8" stroke-linecap="round"/><path d="M4 17H20" stroke="#2B241C" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
       <svg class="icon-btn" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#2E2A24" stroke-width="1.6"/><path d="M21 21L16.5 16.5" stroke="#2E2A24" stroke-width="1.6" stroke-linecap="round"/></svg>
       <div class="cart-icon-wrap" id="cart-btn">
         <svg class="icon-btn" viewBox="0 0 24 24" fill="none"><path d="M4 8L4 20C4 21.1 4.9 22 6 22L18 22C19.1 22 20 21.1 20 20L20 8" stroke="#2E2A24" stroke-width="1.6"/><path d="M2 8H22L20 3H4L2 8Z" stroke="#2E2A24" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12C9 13.7 10.3 15 12 15C13.7 15 15 13.7 15 12" stroke="#2E2A24" stroke-width="1.6"/></svg>
@@ -297,6 +313,12 @@
       </div>
     </div>
   </div>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="#catalogo" onclick="closeMobileNav()">Catálogo</a>
+    <a href="#talles" onclick="closeMobileNav()">Guía de talles</a>
+    <a href="#historias" onclick="closeMobileNav()">Reseñas</a>
+    <a href="#footer" onclick="closeMobileNav()">Contacto</a>
+  </nav>
 </header>
 
 <!-- HERO -->
@@ -674,6 +696,14 @@
   }
 
   document.getElementById('cart-btn').addEventListener('click', openCart);
+
+  function toggleMobileNav(){
+    document.getElementById('mobile-nav').classList.toggle('open');
+  }
+  function closeMobileNav(){
+    document.getElementById('mobile-nav').classList.remove('open');
+  }
+  document.getElementById('hamburger-btn').addEventListener('click', toggleMobileNav);
 
   function checkout(){
     if(cart.length === 0) return;

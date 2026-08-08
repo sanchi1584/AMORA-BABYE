@@ -149,8 +149,9 @@
   .card:hover{ transform:translateY(-4px); box-shadow:0 14px 30px rgba(46,42,36,0.1); }
   .card-media{
     aspect-ratio:1/1; display:flex; align-items:center; justify-content:center;
-    position:relative;
+    position:relative; overflow:hidden;
   }
+  .card-media img{ width:100%; height:100%; object-fit:cover; }
   .card-body{ padding:16px 16px 18px; }
   .card-tag{ font-family:'IBM Plex Mono', monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--sage-dark); margin-bottom:6px; display:block; }
   .card-name{ font-weight:600; font-size:0.95rem; margin-bottom:6px; }
@@ -362,65 +363,113 @@
 
   <div class="cat-ribbon">
     <div class="cat-chip active">Todos</div>
-    <div class="cat-chip">Body</div>
     <div class="cat-chip">Conjuntos</div>
     <div class="cat-chip">Enteritos</div>
-    <div class="cat-chip">Gorros</div>
-    <div class="cat-chip">Escarpines</div>
-    <div class="cat-chip">Abrigo</div>
   </div>
 
   <div style="height:28px"></div>
 
   <div class="grid">
-    <div class="card" data-name="Body manga larga rayado (3-6M)" data-price="9800">
-      <div class="card-media" style="background:#F6E9DE;">
-        <svg width="90" viewBox="0 0 100 100" fill="none"><path d="M28 18h44v18a22 22 0 01-44 0V18z" stroke="#D9A79C" stroke-width="2.4" stroke-linejoin="round"/><path d="M28 26L10 36v22l18-9" stroke="#D9A79C" stroke-width="2.4" stroke-linejoin="round"/><path d="M72 26l18 10v22l-18-9" stroke="#D9A79C" stroke-width="2.4" stroke-linejoin="round"/><path d="M38 60h24v20a12 12 0 01-24 0V60z" stroke="#D9A79C" stroke-width="2.4" stroke-linejoin="round"/></svg>
+    <div class="card" data-name="Conjunto rayado con moños (Talle 4)" data-price="13600">
+      <div class="card-media" style="background:#EDE0CE;">
+        <img src="Conjunto-margot.jpg">
       </div>
       <div class="card-body">
-        <span class="card-tag">Body · 3-6M</span>
-        <div class="card-name">Body manga larga rayado</div>
-        <div class="card-price">$9.800</div>
+        <span class="card-tag">Conjuntos · Talle 4 (1-2 años aprox)</span>
+        <div class="card-name">Conjunto rayado con moños</div>
+        <div class="card-price">$13.600</div>
         <div class="stock-dot">En stock</div>
         <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
       </div>
     </div>
 
-    <div class="card" data-name="Enterito algodón crudo (6-9M)" data-price="13200">
-      <div class="card-media" style="background:#ECEFE4;">
-        <svg width="90" viewBox="0 0 100 100" fill="none"><path d="M22 30 L50 14 L78 30 L78 40 L68 36 L68 82 L32 82 L32 36 L22 40 Z" stroke="#C9A78E" stroke-width="2.4" stroke-linejoin="round"/></svg>
+    <div class="card" data-name="Conjunto flores y jogging bordo (Talle 12-24 meses)" data-price="22500">
+      <div class="card-media" style="background:#EDE0CE;">
+        <img src="tulip-bloom.jpg">
       </div>
       <div class="card-body">
-        <span class="card-tag">Enterito · 6-9M</span>
-        <div class="card-name">Enterito algodón crudo</div>
-        <div class="card-price">$13.200</div>
+        <span class="card-tag">Conjuntos · Talle 12-24 meses</span>
+        <div class="card-name">Conjunto flores y jogging bordo</div>
+        <div class="card-price">$22.500</div>
         <div class="stock-dot">En stock</div>
         <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
       </div>
     </div>
 
-    <div class="card" data-name="Gorro tejido con pompón (RN)" data-price="5400">
-      <div class="card-media" style="background:#F5EBD6;">
-        <svg width="80" viewBox="0 0 100 100" fill="none"><path d="M50 20C30 20 20 38 20 55C20 62 24 66 30 66H70C76 66 80 62 80 55C80 38 70 20 50 20Z" stroke="#C99A5B" stroke-width="2.4" stroke-linejoin="round"/><path d="M22 58 Q50 72 78 58" stroke="#C99A5B" stroke-width="2.4"/></svg>
+    <div class="card" data-name="Enterito lila zorrito con babero (Talle 3)" data-price="11500">
+      <div class="card-media" style="background:#EDE0CE;">
+        <img src="enterito-corto-celeste.jpg">
       </div>
       <div class="card-body">
-        <span class="card-tag">Gorro · RN</span>
-        <div class="card-name">Gorro tejido con pompón</div>
-        <div class="card-price">$5.400</div>
+        <span class="card-tag">Enteritos · Talle 3 (6-9 meses aprox)</span>
+        <div class="card-name">Enterito lila zorrito con babero</div>
+        <div class="card-price">$11.500</div>
         <div class="stock-dot">En stock</div>
         <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
       </div>
     </div>
 
-    <div class="card" data-name="Body estampado animalitos (9-12M)" data-price="10500">
-      <div class="card-media" style="background:#EFE2E6;">
-        <svg width="90" viewBox="0 0 100 100" fill="none"><path d="M28 18h44v18a22 22 0 01-44 0V18z" stroke="#6B5138" stroke-width="2.4" stroke-linejoin="round"/><path d="M28 26L10 36v22l18-9" stroke="#6B5138" stroke-width="2.4" stroke-linejoin="round"/><path d="M72 26l18 10v22l-18-9" stroke="#6B5138" stroke-width="2.4" stroke-linejoin="round"/><path d="M38 60h24v20a12 12 0 01-24 0V60z" stroke="#6B5138" stroke-width="2.4" stroke-linejoin="round"/></svg>
+    <div class="card" data-name="Conjunto oso azul marino (Talle 18-24 meses)" data-price="21000">
+      <div class="card-media" style="background:#EDE0CE;">
+        <img src="Conjuntitos-osito.jpg">
       </div>
       <div class="card-body">
-        <span class="card-tag">Body · 9-12M</span>
-        <div class="card-name">Body estampado animalitos</div>
-        <div class="card-price">$10.500</div>
-        <div class="stock-dot">Últimas unidades</div>
+        <span class="card-tag">Conjuntos · Talle 18-24 meses</span>
+        <div class="card-name">Conjunto oso azul marino</div>
+        <div class="card-price">$21.000</div>
+        <div class="stock-dot">En stock</div>
+        <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="card" data-name="Conjunto bordo bordado Baby (Talle 9-12 meses)" data-price="21000">
+      <div class="card-media" style="background:#EDE0CE;">
+        <img src="Conjuntito-cherry-baby.jpg">
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Conjuntos · Talle 9-12 meses</span>
+        <div class="card-name">Conjunto bordo bordado Baby</div>
+        <div class="card-price">$21.000</div>
+        <div class="stock-dot">En stock</div>
+        <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="card" data-name="Enterito arcoíris con gorro (Talle 2)" data-price="12500">
+      <div class="card-media" style="background:#EDE0CE;">
+        <img src="enterito-beish.jpg">
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Enteritos · Talle 2 (3-6 meses aprox)</span>
+        <div class="card-name">Enterito arcoíris con gorro</div>
+        <div class="card-price">$12.500</div>
+        <div class="stock-dot">En stock</div>
+        <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="card" data-name="Enterito osita rosa con gorro (Talle 2)" data-price="12500">
+      <div class="card-media" style="background:#EDE0CE;">
+        <img src="enterito-rosa.jpg">
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Enteritos · Talle 2 (3-6 meses aprox)</span>
+        <div class="card-name">Enterito osita rosa con gorro</div>
+        <div class="card-price">$12.500</div>
+        <div class="stock-dot">En stock</div>
+        <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="card" data-name="Enterito osito globo celeste con gorro (Talle 1)" data-price="12500">
+      <div class="card-media" style="background:#EDE0CE;">
+        <img src="enterito-azul.jpg">
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Enteritos · Talle 1 (0-3 meses aprox)</span>
+        <div class="card-name">Enterito osito globo celeste con gorro</div>
+        <div class="card-price">$12.500</div>
+        <div class="stock-dot">En stock</div>
         <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
       </div>
     </div>

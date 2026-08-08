@@ -206,6 +206,66 @@
     box-shadow:0 8px 24px rgba(0,0,0,0.25); cursor:pointer; transition:transform .2s;
   }
   .wa-float:hover{ transform:scale(1.08); }
+
+  /* ---------- ADD TO CART BUTTON ---------- */
+  .add-btn{
+    margin-top:12px; width:100%; padding:9px; border-radius:100px;
+    border:1px solid var(--plum); background:transparent; color:var(--plum);
+    font-weight:600; font-size:0.78rem; cursor:pointer; transition:.15s; font-family:'Inter', sans-serif;
+  }
+  .add-btn:hover{ background:var(--plum); color:var(--cream); }
+  .add-btn.added{ background:var(--sage-dark); border-color:var(--sage-dark); color:#fff; }
+
+  /* ---------- CART ICON + BADGE ---------- */
+  .cart-icon-wrap{ position:relative; cursor:pointer; display:flex; align-items:center; }
+  .cart-badge{
+    position:absolute; top:-7px; right:-7px; background:var(--coral); color:#fff;
+    font-size:0.62rem; font-weight:700; width:16px; height:16px; border-radius:50%;
+    display:none; align-items:center; justify-content:center;
+  }
+
+  /* ---------- CART DRAWER ---------- */
+  .cart-overlay{
+    position:fixed; inset:0; background:rgba(43,36,28,0.4); z-index:70;
+    opacity:0; pointer-events:none; transition:opacity .25s;
+  }
+  .cart-overlay.open{ opacity:1; pointer-events:auto; }
+  .cart-drawer{
+    position:fixed; top:0; right:-380px; width:360px; max-width:88vw; height:100%;
+    background:var(--cream); z-index:80; box-shadow:-10px 0 30px rgba(0,0,0,0.15);
+    transition:right .3s ease; display:flex; flex-direction:column;
+  }
+  .cart-drawer.open{ right:0; }
+  .cart-drawer-head{
+    padding:20px; border-bottom:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .cart-drawer-head h3{ font-size:1.1rem; }
+  .cart-close{ cursor:pointer; font-size:1.5rem; line-height:1; color:var(--ink); }
+  .cart-items{ flex:1; overflow-y:auto; padding:12px 20px; }
+  .cart-empty{ text-align:center; color:rgba(46,42,36,0.5); padding:50px 0; font-size:0.9rem; }
+  .cart-item{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 0; border-bottom:1px solid var(--line); gap:10px;
+  }
+  .cart-item-name{ font-size:0.86rem; font-weight:600; margin-bottom:4px; }
+  .cart-item-price{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--sage-dark); }
+  .cart-qty{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .qty-btn{
+    width:22px; height:22px; border-radius:50%; border:1px solid var(--line);
+    background:#fff; cursor:pointer; font-size:0.85rem; line-height:1;
+  }
+  .cart-footer{ padding:18px 20px 22px; border-top:1px solid var(--line); }
+  .cart-total{
+    display:flex; justify-content:space-between; font-weight:700;
+    margin-bottom:14px; font-family:'IBM Plex Mono', monospace; font-size:1rem;
+  }
+  .cart-checkout{
+    width:100%; background:#25D366; color:#fff; border:none; padding:14px;
+    border-radius:100px; font-weight:700; cursor:pointer; font-size:0.92rem;
+    display:flex; align-items:center; justify-content:center; gap:8px; transition:.15s;
+  }
+  .cart-checkout:disabled{ opacity:0.5; cursor:not-allowed; }
 </style>
 </head>
 <body>
@@ -224,7 +284,10 @@
     </nav>
     <div class="nav-right">
       <svg class="icon-btn" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#2E2A24" stroke-width="1.6"/><path d="M21 21L16.5 16.5" stroke="#2E2A24" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <svg class="icon-btn" viewBox="0 0 24 24" fill="none"><path d="M4 8L4 20C4 21.1 4.9 22 6 22L18 22C19.1 22 20 21.1 20 20L20 8" stroke="#2E2A24" stroke-width="1.6"/><path d="M2 8H22L20 3H4L2 8Z" stroke="#2E2A24" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12C9 13.7 10.3 15 12 15C13.7 15 15 13.7 15 12" stroke="#2E2A24" stroke-width="1.6"/></svg>
+      <div class="cart-icon-wrap" id="cart-btn">
+        <svg class="icon-btn" viewBox="0 0 24 24" fill="none"><path d="M4 8L4 20C4 21.1 4.9 22 6 22L18 22C19.1 22 20 21.1 20 20L20 8" stroke="#2E2A24" stroke-width="1.6"/><path d="M2 8H22L20 3H4L2 8Z" stroke="#2E2A24" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12C9 13.7 10.3 15 12 15C13.7 15 15 13.7 15 12" stroke="#2E2A24" stroke-width="1.6"/></svg>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </div>
     </div>
   </div>
 </header>
@@ -310,7 +373,7 @@
   <div style="height:28px"></div>
 
   <div class="grid">
-    <div class="card">
+    <div class="card" data-name="Body manga larga rayado (3-6M)" data-price="9800">
       <div class="card-media" style="background:#F6E9DE;">
         <svg width="90" viewBox="0 0 100 100" fill="none"><path d="M28 18h44v18a22 22 0 01-44 0V18z" stroke="#D9A79C" stroke-width="2.4" stroke-linejoin="round"/><path d="M28 26L10 36v22l18-9" stroke="#D9A79C" stroke-width="2.4" stroke-linejoin="round"/><path d="M72 26l18 10v22l-18-9" stroke="#D9A79C" stroke-width="2.4" stroke-linejoin="round"/><path d="M38 60h24v20a12 12 0 01-24 0V60z" stroke="#D9A79C" stroke-width="2.4" stroke-linejoin="round"/></svg>
       </div>
@@ -319,10 +382,11 @@
         <div class="card-name">Body manga larga rayado</div>
         <div class="card-price">$9.800</div>
         <div class="stock-dot">En stock</div>
+        <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-name="Enterito algodón crudo (6-9M)" data-price="13200">
       <div class="card-media" style="background:#ECEFE4;">
         <svg width="90" viewBox="0 0 100 100" fill="none"><path d="M22 30 L50 14 L78 30 L78 40 L68 36 L68 82 L32 82 L32 36 L22 40 Z" stroke="#C9A78E" stroke-width="2.4" stroke-linejoin="round"/></svg>
       </div>
@@ -331,10 +395,11 @@
         <div class="card-name">Enterito algodón crudo</div>
         <div class="card-price">$13.200</div>
         <div class="stock-dot">En stock</div>
+        <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-name="Gorro tejido con pompón (RN)" data-price="5400">
       <div class="card-media" style="background:#F5EBD6;">
         <svg width="80" viewBox="0 0 100 100" fill="none"><path d="M50 20C30 20 20 38 20 55C20 62 24 66 30 66H70C76 66 80 62 80 55C80 38 70 20 50 20Z" stroke="#C99A5B" stroke-width="2.4" stroke-linejoin="round"/><path d="M22 58 Q50 72 78 58" stroke="#C99A5B" stroke-width="2.4"/></svg>
       </div>
@@ -343,10 +408,11 @@
         <div class="card-name">Gorro tejido con pompón</div>
         <div class="card-price">$5.400</div>
         <div class="stock-dot">En stock</div>
+        <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-name="Body estampado animalitos (9-12M)" data-price="10500">
       <div class="card-media" style="background:#EFE2E6;">
         <svg width="90" viewBox="0 0 100 100" fill="none"><path d="M28 18h44v18a22 22 0 01-44 0V18z" stroke="#6B5138" stroke-width="2.4" stroke-linejoin="round"/><path d="M28 26L10 36v22l18-9" stroke="#6B5138" stroke-width="2.4" stroke-linejoin="round"/><path d="M72 26l18 10v22l-18-9" stroke="#6B5138" stroke-width="2.4" stroke-linejoin="round"/><path d="M38 60h24v20a12 12 0 01-24 0V60z" stroke="#6B5138" stroke-width="2.4" stroke-linejoin="round"/></svg>
       </div>
@@ -355,6 +421,7 @@
         <div class="card-name">Body estampado animalitos</div>
         <div class="card-price">$10.500</div>
         <div class="stock-dot">Últimas unidades</div>
+        <button class="add-btn" onclick="addToCart(this)">Agregar al carrito</button>
       </div>
     </div>
   </div>
@@ -456,9 +523,114 @@
   </div>
 </footer>
 
-<div class="wa-float">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 6.45 17.5 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.84 19.01L7.54 18.83L4.42 19.65L5.26 16.61L5.06 16.29C4.24 14.98 3.8 13.46 3.8 11.91C3.8 7.37 7.5 3.67 12.05 3.67C16.6 3.67 20.29 7.37 20.29 11.91C20.28 16.46 16.59 20.15 12.04 20.15Z"/></svg>
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-drawer-head">
+    <h3>Tu carrito</h3>
+    <span class="cart-close" onclick="closeCart()">&times;</span>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty">Todavía no agregaste nada.</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total"><span>Total</span><span id="cart-total">$0</span></div>
+    <button class="cart-checkout" id="checkout-btn" onclick="checkout()" disabled style="opacity:0.5;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 6.45 17.5 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.84 19.01L7.54 18.83L4.42 19.65L5.26 16.61L5.06 16.29C4.24 14.98 3.8 13.46 3.8 11.91C3.8 7.37 7.5 3.67 12.05 3.67C16.6 3.67 20.29 7.37 20.29 11.91C20.28 16.46 16.59 20.15 12.04 20.15Z"/></svg>
+      Comprar por WhatsApp
+    </button>
+  </div>
 </div>
+
+<a class="wa-float" href="https://wa.me/543743559373?text=%C2%A1Hola!%20Tengo%20una%20consulta%20sobre%20Amora%20Baby" target="_blank" aria-label="Escribinos por WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 6.45 17.5 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.84 19.01L7.54 18.83L4.42 19.65L5.26 16.61L5.06 16.29C4.24 14.98 3.8 13.46 3.8 11.91C3.8 7.37 7.5 3.67 12.05 3.67C16.6 3.67 20.29 7.37 20.29 11.91C20.28 16.46 16.59 20.15 12.04 20.15Z"/></svg>
+</a>
+
+<script>
+  const WHATSAPP_NUMBER = "543743559373";
+  let cart = [];
+
+  function addToCart(btn){
+    const card = btn.closest('.card');
+    const name = card.dataset.name;
+    const price = parseInt(card.dataset.price, 10);
+    const existing = cart.find(i => i.name === name);
+    if(existing){ existing.qty += 1; }
+    else{ cart.push({ name, price, qty: 1 }); }
+    renderCart();
+
+    const original = btn.textContent;
+    btn.textContent = "Agregado ✓";
+    btn.classList.add('added');
+    setTimeout(() => { btn.textContent = original; btn.classList.remove('added'); }, 1100);
+
+    openCart();
+  }
+
+  function changeQty(index, delta){
+    cart[index].qty += delta;
+    if(cart[index].qty <= 0){ cart.splice(index, 1); }
+    renderCart();
+  }
+
+  function renderCart(){
+    const itemsEl = document.getElementById('cart-items');
+    const totalEl = document.getElementById('cart-total');
+    const badge = document.getElementById('cart-badge');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    if(cart.length === 0){
+      itemsEl.innerHTML = '<div class="cart-empty">Todavía no agregaste nada.</div>';
+      badge.style.display = 'none';
+      checkoutBtn.disabled = true;
+      checkoutBtn.style.opacity = '0.5';
+    } else {
+      itemsEl.innerHTML = cart.map((item, i) => `
+        <div class="cart-item">
+          <div>
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">$${(item.price * item.qty).toLocaleString('es-AR')}</div>
+          </div>
+          <div class="cart-qty">
+            <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
+            <span>${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+          </div>
+        </div>
+      `).join('');
+      const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+      badge.style.display = 'flex';
+      badge.textContent = totalQty;
+      checkoutBtn.disabled = false;
+      checkoutBtn.style.opacity = '1';
+    }
+
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    totalEl.textContent = '$' + total.toLocaleString('es-AR');
+  }
+
+  function openCart(){
+    document.getElementById('cart-drawer').classList.add('open');
+    document.getElementById('cart-overlay').classList.add('open');
+  }
+  function closeCart(){
+    document.getElementById('cart-drawer').classList.remove('open');
+    document.getElementById('cart-overlay').classList.remove('open');
+  }
+
+  document.getElementById('cart-btn').addEventListener('click', openCart);
+
+  function checkout(){
+    if(cart.length === 0) return;
+    let msg = "¡Hola! Quiero comprar:\n";
+    cart.forEach(item => {
+      msg += `- ${item.qty}x ${item.name} ($${item.price.toLocaleString('es-AR')} c/u)\n`;
+    });
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    msg += `\nTotal: $${total.toLocaleString('es-AR')}`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+</script>
 
 </body>
 </html>

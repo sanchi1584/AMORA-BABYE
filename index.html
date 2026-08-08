@@ -159,6 +159,12 @@
   .stock-dot{ display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; color:var(--sage-dark); margin-top:8px; }
   .stock-dot::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--sage-dark); }
 
+  /* ---------- SOLD OUT STATE ---------- */
+  .card.sold-out .card-media{ filter:grayscale(0.7); opacity:0.55; }
+  .card.sold-out .stock-dot{ color:var(--coral); }
+  .card.sold-out .stock-dot::before{ background:var(--coral); }
+  .card.sold-out .add-btn{ pointer-events:none; opacity:0.45; }
+
   /* ---------- SIZE GUIDE STRIP ---------- */
   .guide{ background:var(--plum); color:var(--cream); padding:70px 24px; }
   .guide-inner{ max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
